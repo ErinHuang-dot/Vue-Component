@@ -1,0 +1,1 @@
+{"version":3,"sources":["layout/index.scss","layout/index.css"],"names":[],"mappings":"AAAA;EACE,aAAa;ACCf;;ADEA;EACE,gBAAgB;ACClB","file":"index.css","sourcesContent":[".wrap {\n  height: 100vh;\n}\n\n.form-login {\n  max-width: 265px;\n}",".wrap {\n  height: 100vh;\n}\n\n.form-login {\n  max-width: 265px;\n}\n"]}
