@@ -1,0 +1,31 @@
+---
+title: Login
+layout: ./app/layout.ejs
+engine: ejs
+current: index
+---
+
+<main id="loginApp">
+    <div class="container">
+      <div class="wrap d-flex justify-content-center align-items-center">
+        <div class="form-login">
+          <h2 class="fs-3 text-center mb-4">請先登入</h2>
+          <div class="mb-5">
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" name="email" v-model="user.username" id="floatingEmail" placeholder="Email address">
+              <label for="floatingEmail">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" name="password" v-model="user.password" id="floatingPass" placeholder="Password">
+              <label for="floatingPass">Password</label>
+            </div>
+            <button type="button" class="btn btn-primary w-100 fs-5 text-white mb-3" v-on:click="login" id="btnLogin">登入</button>
+          </div>
+          <p class="text-muted text-center">© 2021~∞ - 六角學院</p>
+      
+        </div>
+      </div>  
+    </div>  
+</main>
+
+
