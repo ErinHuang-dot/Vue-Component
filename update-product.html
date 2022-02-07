@@ -49,124 +49,21 @@
         </tbody>
       </table>
 
-      <!-- 新增/編輯視窗 -->
+      <!-- component: pagination -->
+      <!-- 顯示頁碼：資料從外層傳到內層，外 pages/內 pagination-->
+      <!-- 頁碼切換：資料從內層傳到外層，外 getProducts/內 get-product -->
+      <pagination :pages="pagination" @get-product="getProducts"></pagination>
+
+      <!-- Modal:新增/編輯 -->
       <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
-              <h5 class="modal-title" id="updateModalLabel">新增產品</h5>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <!-- modal-start -->
-                <div class="col-4">
-                  <div class="mb-5">
-                    <label for="imgUrl" class="form-label">主要圖片</label>
-                    <input type="text" class="form-control mb-2" name="img-url" id="imgUrl" placeholder="請輸入圖片連結" v-model="tempProduct.imageUrl">
-                    <img :src="tempProduct.imageUrl" class="img-fluid"> 
-                  </div>
-                  <div>
-                    <!-- 多圖新增 -->
-                    <h3 class="mb-3">多圖新增</h3>
-                    <!-- 先判斷 tempProduct.imagesUrl 是否為陣列資料-->
-                    <div v-if="Array.isArray(tempProduct.imagesUrl)">
-                      <div v-for="(img, key) in tempProduct.imagesUrl" :key="key + 12345">
-                        <input type="text" class="form-control mb-2" name="img-url" id="imgUrl" placeholder="請輸入圖片連結" v-model="tempProduct.imagesUrl[key]">
-                        <img :src="tempProduct.imagesUrl[key]" class="img-fluid mb-2">                             
-                      </div>
-                      <!-- 新增按鈕的進階判斷：1.陣列為空陣列 2.陣列最後一筆資料有內容 -->
-                      <button type="button" class="btn btn-primary btn-sm w-100 mb-2" 
-                      v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]" @click="tempProduct.imagesUrl.push('')">新增圖片</button>
-                      <button type="button" class="btn btn-outline-danger btn-sm w-100" 
-                      v-else @click="tempProduct.imagesUrl.pop()">刪除最後一筆圖片</button>
-                    </div>
-                  </div>
-                </div>
-                <!-- modal-end -->
-                <div class="col-8">
-                  <!-- modal-end-top -->
-                  <div class="pb-4 border-bottom mb-3">
-                    <div class="mb-3">
-                      <label for="productTitle" class="form-label">標題</label>
-                      <input type="text" class="form-control mb-2" name="product-title" 
-                      id="productTitle" placeholder="請輸入標題" v-model="tempProduct.title" autocomplete="on">
-                    </div>
-                    <div class="row">
-                      <div class="col">
-                        <div class="mb-3">
-                          <label for="productCategory" class="form-label">分類</label>
-                          <input type="text" class="form-control mb-2" name="product-category" 
-                          id="productCategory" placeholder="請輸入分類" v-model="tempProduct.category" autocomplete="on">
-                        </div>                      
-                      </div>
-                      <div class="col">
-                        <div class="mb-3">
-                          <label for="productUnit" class="form-label">單位</label>
-                          <input type="text" class="form-control mb-2" name="product-unit" 
-                          id="productUnit" placeholder="請輸入單位" v-model="tempProduct.unit" autocomplete="on">
-                        </div> 
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col">
-                        <div class="mb-3">
-                          <label for="productPrice" class="form-label">原價</label>
-                          <input type="text" class="form-control mb-2" name="product-price" 
-                          id="productPrice" placeholder="請輸入原價" v-model.number="tempProduct.origin_price" autocomplete="on">
-                        </div>                      
-                      </div>
-                      <div class="col">
-                        <div class="mb-3">
-                          <label for="productSalePrice" class="form-label">售價</label>
-                          <input type="text" class="form-control mb-2" name="product-sale-price" 
-                          id="productSalePrice" placeholder="請輸入售價" v-model.number="tempProduct.price" autocomplete="on">
-                        </div> 
-                      </div>
-                    </div>
-                  </div>
-                  <!-- modal-end-bottom -->
-                  <div class="pb-4">
-                    <div class="mb-3">
-                      <label for="productDescription" class="form-label">產品描述</label>
-                      <textarea class="form-control mb-2" id="productDescription" rows="2" placeholder="請輸入產品描述" v-model="tempProduct.description"></textarea>
-                    </div>
-                    <div class="mb-3">
-                      <label for="productDetail" class="form-label">說明內容</label>
-                      <textarea class="form-control mb-2" id="productDetail" rows="2" placeholder="請輸入說明內容" v-model="tempProduct.content"></textarea>
-                    </div>   
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" value="" id="is_enabled" v-model="tempProduct.is_enabled"
-                        :true-value="1" :false-value="0">
-                      <label for="is_enabled" class="form-check-label">是否啟用</label>
-                    </div>                  
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-              <button type="button" class="btn btn-primary" @click="updateProduct">確認</button>
-            </div>
-          </div>
-        </div>
+        <!-- component: updatemodal -->
+        <updatemodal :temp-product="tempProduct" :is-new="isNew" @get-products="getProducts"></updatemodal>
       </div>
 
-      <!-- 刪除視窗 -->
+      <!-- Modal:刪除 -->
       <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-              <h5 class="modal-title" id="deleteModalLabel">刪除產品</h5>
-            </div>
-            <div class="modal-body">
-              <p>是否刪除 <span class="text-danger">{{ tempProduct.title }}</span> 商品（刪除後將無法恢復）？</p> 
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-              <button type="button" class="btn btn-danger" @click="deleteProduct">確認刪除</button>
-            </div>
-          </div>
-        </div>
+        <!-- component: deletemodal -->
+        <deletemodal :temp-product="tempProduct" @get-products="getProducts"></deletemodal>
       </div>
     </div>
 </main>
