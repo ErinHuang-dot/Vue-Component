@@ -4,15 +4,12 @@ let deleteModal = {};
 const updateApp = Vue.createApp ({
     data() {
         return {
-            user: {
-                username: '',
-                password: ''
-            },
             products: [],
             tempProduct: {
                 imagesUrl: [],
             },
             isNew: false,
+            pagination: {}
         }
     },
   
@@ -27,10 +24,12 @@ const updateApp = Vue.createApp ({
                 window.location.href = 'index.html';                
             })
         },
-        getProducts() {
-            axios.get(`${url}/api/${path}/admin/products`)
+        getProducts(page = 1) {
+            // API位址加入頁數變數
+            axios.get(`${url}/api/${path}/admin/products?page=${page}`)
             .then((res) => {
                 this.products = res.data.products;
+                this.pagination = res.data.pagination;
             })
             .catch((error) => {
                 window.alert('error');
@@ -53,35 +52,13 @@ const updateApp = Vue.createApp ({
                 deleteModal.show();
             }
         },
-        updateProduct() {
-            let newUrl = `${url}/api/${path}/admin/product`;
-            let method = 'post';
-            // 如果是編輯模式，api位址和介接方法變動為
-            if (!this.isNew) {
-                newUrl = `${url}/api/${path}/admin/product/${this.tempProduct.id}`;
-                method = 'put';            
-            }
+        
+    },
 
-            axios[method](newUrl, { data: this.tempProduct})
-            .then((res) => {
-                this.getProducts();
-                updateModal.hide();
-            })
-            .catch((error) => {
-                console.dir(error);
-            })
-        },
-        deleteProduct() {
-            let newUrl = `${url}/api/${path}/admin/product/${this.tempProduct.id}`;
-            axios.delete(newUrl, { data: this.tempProduct})
-            .then((res) => {
-                deleteModal.hide();
-                this.getProducts();       
-            })
-            .catch((error) => {
-                console.dir(error);
-            })
-        }
+    components: {
+        pagination,
+        updatemodal,
+        deletemodal
     },
 
     mounted() {
@@ -95,6 +72,6 @@ const updateApp = Vue.createApp ({
         
     }
   
-  })
+})
   
-  updateApp.mount('#updateApp');
+updateApp.mount('#updateApp');
