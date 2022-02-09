@@ -1,4 +1,12 @@
 const updatemodal = {
+    data () {
+        return {
+            list: [0, 1, 2, 3, 4],
+            starA: '../assets/images/star-filled.svg',
+            starB: '../assets/images/star-outlined.svg',
+            starScore: 0
+        }
+    },
     props: ['tempProduct', 'isNew'],
     methods: {
         updateProduct() {
@@ -18,6 +26,28 @@ const updatemodal = {
             .catch((error) => {
                 console.dir(error);
             })
+        },
+        upload(event) {
+            // 找到資料位置
+            const file = event.target.files[0];
+            console.log(file);
+            // 上傳form的資料屬性
+            const formData = new FormData();
+            // 將API<input name>欄位夾帶
+            formData.append('file-to-upload', file);
+
+            axios.post(`${url}/api/${path}/admin/upload`, formData)
+            .then((res) => {
+                console.log(res);
+                this.tempProduct.imageUrl = res.data.imageUrl;
+            })
+            .catch((error) => {
+                console.log(error.response);
+            })
+        },
+        clickStars(i) {
+            this.starScore = i+1;
+            console.log(`得到 ${i+1} 顆星星`);
         }
     },
     template: `<div class="modal-dialog modal-xl">
@@ -30,9 +60,11 @@ const updatemodal = {
             <!-- modal-start -->
             <div class="col-4">
                 <div class="mb-5">
-                <label for="imgUrl" class="form-label">主要圖片</label>
-                <input type="text" class="form-control mb-2" name="img-url" id="imgUrl" placeholder="請輸入圖片連結" v-model="tempProduct.imageUrl">
-                <img :src="tempProduct.imageUrl" class="img-fluid"> 
+                    <label for="imgUrl" class="form-label">主要圖片</label>
+                    <input type="file" class="form-control mb-2" id="imgFile" @change="upload">
+                    <p>或</p>
+                    <input type="text" class="form-control mb-2" name="img-url" id="imgUrl" placeholder="請輸入圖片連結" v-model="tempProduct.imageUrl">
+                    <img :src="tempProduct.imageUrl" class="img-fluid"> 
                 </div>
                 <div>
                 <!-- 多圖新增 -->
@@ -102,7 +134,16 @@ const updatemodal = {
                 <div class="mb-3">
                     <label for="productDetail" class="form-label">說明內容</label>
                     <textarea class="form-control mb-2" id="productDetail" rows="2" placeholder="請輸入說明內容" v-model="tempProduct.content"></textarea>
-                </div>   
+                </div> 
+                <!-- 星星評分 -->
+                <div class="mb-4">
+                    <p class="mb-2">產品評價</p>
+                    <ul class="stars-wrap ps-0 mb-0 d-flex">
+                        <li v-for="(i, index) in list" :key="index" @click="clickStars(index)">
+                            <img class="star" :src="starScore>index?starA:starB"/>
+                        </li>
+                    </ul>
+                </div> 
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" value="" id="is_enabled" v-model="tempProduct.is_enabled"
                     :true-value="1" :false-value="0">

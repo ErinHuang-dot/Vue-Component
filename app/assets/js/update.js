@@ -7,6 +7,7 @@ const updateApp = Vue.createApp ({
             products: [],
             tempProduct: {
                 imagesUrl: [],
+                upload: {}
             },
             isNew: false,
             pagination: {}

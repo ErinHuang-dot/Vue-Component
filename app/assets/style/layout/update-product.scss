@@ -9,3 +9,15 @@
 .col-s {
   width: 12%;
 }
+
+.stars-wrap {
+  list-style: none;
+
+  .star {
+    width: 20px;
+  }
+  
+  li + li {
+    margin-left: .25rem;
+  }
+}
