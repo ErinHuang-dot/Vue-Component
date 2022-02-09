@@ -11583,4 +11583,16 @@ fieldset:disabled .btn {
   width: 12%;
 }
 
+.stars-wrap {
+  list-style: none;
+}
+
+.stars-wrap .star {
+  width: 20px;
+}
+
+.stars-wrap li + li {
+  margin-left: .25rem;
+}
+
 /*# sourceMappingURL=all.css.map */
