@@ -47,8 +47,10 @@ const updatemodal = {
         },
         clickStars(i) {
             this.starScore = i+1;
-            console.log(`得到 ${i+1} 顆星星`);
         }
+    },
+    components: {
+        starvalue
     },
     template: `<div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -138,11 +140,10 @@ const updatemodal = {
                 <!-- 星星評分 -->
                 <div class="mb-4">
                     <p class="mb-2">產品評價</p>
-                    <ul class="stars-wrap ps-0 mb-0 d-flex">
-                        <li v-for="(i, index) in list" :key="index" @click="clickStars(index)">
-                            <img class="star" :src="starScore>index?starA:starB"/>
-                        </li>
-                    </ul>
+                    <starvalue 
+                    :list="list" :star-a="starA" :star-b="starB" :star-score="starScore"
+                    @click-stars="clickStars">
+                    </starvalue>
                 </div> 
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" value="" id="is_enabled" v-model="tempProduct.is_enabled"
