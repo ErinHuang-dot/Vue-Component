@@ -73,8 +73,8 @@ var updatemodal = {
   data: function data() {
     return {
       list: [0, 1, 2, 3, 4],
-      starA: '../assets/images/star-filled.svg',
-      starB: '../assets/images/star-outlined.svg',
+      starA: './assets/images/star-filled.svg',
+      starB: './assets/images/star-outlined.svg',
       starScore: 0
     };
   },
